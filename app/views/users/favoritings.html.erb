@@ -5,7 +5,7 @@
         <h3 class="panel-title"><%= @user.name %></h3>
       </div>
       <div class="panel-body">
-        <img class="media-object img-rounded img-responsive" src="<%= gravatar_url(@user, { size: 500}) %>" alt="">
+        <img class="media-object img-rounded img-responsive" src="<%= gravatar_url(@user, { size: 250}) %>" alt="">
       </div>
     </div>
     <%= render 'relationships/follow_button', user: @user %>
@@ -17,6 +17,23 @@
       <li class="<%= 'active' if current_page?(followers_user_path(@user)) %>"><%= link_to followers_user_path(@user) do %>Followers <span class="badge"><%= @count_followers %></span><% end %></li>
       <li class="<%= 'active' if current_page?(favoritings_user_path(@user)) %>"><%= link_to favoritings_user_path(@user) do %>Favorite<span class="badge"><%= @count_favoritings %></span><% end %></li>
     </ul>
-    <%= render 'users', users: @followers %>
+    <ul class="media-list">
+      <% @favoritings.each do |micropost| %>
+        <% user = micropost.user %>
+        <li class="media">
+          <div class="media-left">
+            <img class="media-object img-rounded" src="<%= gravatar_url(micropost.user, options = { size: 50 }) %>" alt="">
+          </div>
+          <div class="media-body">
+            <div>
+              <%= link_to micropost.user.name, user_path(micropost.user) %> <span class="text-muted">posted at <%= micropost.created_at %></span>
+            </div>
+            <div>
+              <p><%= micropost.content%></p>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    <ul>
   </div>
 </div>
